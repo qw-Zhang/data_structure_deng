@@ -20,8 +20,11 @@ void bubblesort1A(int A[],int n)
 int main(void)
 {
     int array[] = {2,13,345,63,2,1,434,21,18};
-    bubblesort1A(array,9);
-    for(int i = 0;i < 9;i++){
+    int len = sizeof(array)/sizeof(array[0]);
+    bubblesort1A(array,len);
+    for(int i = 0;i < len;i++){
         cout<<array[i]<<" ";
     }
+    cout<<endl;
+    return 0;
 }
