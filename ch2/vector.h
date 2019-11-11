@@ -10,7 +10,7 @@ template <typename T> class Vector{
         void shrink();
         bool bubble(Rank lo,Rank hi);
         void bubbleSort(Rank lo,Rank hi);
-        Rank max(Rank lo,Rank,hi);
+        Rank max(Rank lo,Rank hi);
         void selectSort(Rank lo,Rank hi);
         void merge(Rank lo,Rank mi,Rank hi);
         void mergeSort(Rank lo,Rank hi);
@@ -49,8 +49,8 @@ template <typename T> class Vector{
 
         ~Vector(){delete []_elem; }
 
-        Rank size() const {return _size};
-        bool empty() const {return !_size};
+        Rank size() const {return _size;}
+        bool empty() const {return !_size;}
         int disordered() const;
         Rank find(T const& e) const {return find(e,0,_size);}
         Rank find(T const& e, Rank lo,Rank hi) const;
@@ -78,3 +78,4 @@ template <typename T> class Vector{
         template <typename VST> void traverse(VST& );
 
 };
+
