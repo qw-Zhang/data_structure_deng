@@ -8,8 +8,8 @@ void Vector<T>::copyFrom(T const* A,Rank lo,Rank hi)
     _elem = new T[_capacity];
     _size = 0;
     while(lo < hi){
-        _elem[size] = A[lo];
-        size++;lo++;
+        _elem[_size] = A[lo];
+        _size++;lo++;
     }
 }
 
@@ -72,3 +72,59 @@ Rank Vector<T>::find(T const& e,Rank lo,Rank hi) const
     return hi;
 }
 
+template <typename T>
+Rank Vector<T>::insert(Rank r,T const& e)
+{
+    expand();
+    for(int i = _size;i > r;i++){
+        _elem[i] = _elem[i-1];
+    }
+    _elem[r] = e;
+    _size++;
+    return r;
+}
+
+template <typename T>
+int Vector<T>::remove(Rank lo,Rank hi)
+{
+    if(lo == hi)
+        return 0;
+    while(hi < _size)
+        _elem[lo++] = _elem[hi++];
+    _size = lo;
+    shrink();
+    return hi - lo;
+}
+
+template <typename T>
+T Vector<T>::remove(Rank r)
+{
+    T e = _elem[r];
+    remove(r,r+1);
+    return e;
+}
+
+template <typename T>
+int Vector<T>::deduplicate()
+{
+    int old_size = _size;
+    Rank i = 1;
+    while(i < _size){
+        (find(_elem,0,i))? i++: remove(i);
+    }
+    return old_size - _size;
+}
+
+template <typename T>
+void Vector<T>::traverse(void (*visit) (T&))
+{
+    for(int i = 0;i < _size;i++)
+        visit(_elem[i]);
+}
+
+template <typename T> template <typename VST>
+void Vector<T>::traverse(VST& visit)
+{
+    for(int i = 0;i < _size;i++)
+        visit(_elem[i]);
+}
