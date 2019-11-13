@@ -13,8 +13,14 @@ int main(void)
     int temp = 10;
     int ss = myvector.insert(temp);
     myvector.insert(1000);
+    myvector.insert(1111);
+    int res_search = myvector.search(1);
     int res = myvector.size();
+    //increase(myvector);
+    int dd = myvector.disordered();
     cout<<"insert position = "<<ss<<endl;
     cout<<"size = "<<res<<endl;
+    cout<<"disorders = "<<dd<<endl;
+    cout<<"position of search = "<<res_search<<endl;
     return 0;
 }

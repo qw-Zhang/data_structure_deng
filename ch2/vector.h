@@ -79,7 +79,8 @@ template <typename T> class Vector{
 
 };
 
-
+//implement above interface
+//
 //#include"vector.h"
 #include<cstdlib>
 
@@ -209,4 +210,52 @@ void Vector<T>::traverse(VST& visit)
 {
     for(int i = 0;i < _size;i++)
         visit(_elem[i]);
+}
+
+template <typename T> struct Increase
+{
+    virtual void operator() (T& e){e++;}
+};
+
+template <typename  T> void increase(Vector<T>& V)
+{
+    V.traverse(Increase<T>());
+}
+
+template <typename T> int Vector<T>::disordered() const
+{
+    int n = 0;
+    for(int i = 1;i < _size;i++){
+        if(_elem[i -1] > _elem[i])
+            n++;
+    }
+    return n;
+}
+
+template <typename T> int Vector<T>::uniquify()
+{
+    Rank i = 0,j = 0;
+    while(++j < _size){
+        if(_elem[i] != _elem[j])
+            _elem[++i] = _elem[j];
+    }
+    _size = ++i;shrink();
+    return j - i;
+}
+
+
+template <typename T> static Rank binsearch(T* A, T const& e, Rank lo,Rank hi)
+{
+    while(lo < hi){
+        Rank mi = (lo + hi)>>1;
+        (e < A[mi])? hi = mi:lo = mi + 1;
+    }
+    return --lo;
+}
+
+
+template <typename T> Rank Vector<T>::search(T const& e,Rank lo,Rank hi) const
+{
+    //return (rand() % 2)? binsearch(_elem,e,lo,hi):fibsearch(_elem, e, lo, hi);
+    return binsearch(_elem,e,lo,hi);
 }
