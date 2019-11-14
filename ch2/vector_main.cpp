@@ -18,6 +18,8 @@ int main(void)
     int res = myvector.size();
     //increase(myvector);
     int dd = myvector.disordered();
+    myvector.traverse(visit);
+    cout<<endl;
     cout<<"insert position = "<<ss<<endl;
     cout<<"size = "<<res<<endl;
     cout<<"disorders = "<<dd<<endl;

@@ -83,6 +83,7 @@ template <typename T> class Vector{
 //
 //#include"vector.h"
 #include<cstdlib>
+#include<iostream>
 
 template <typename T> 
 void Vector<T>::copyFrom(T const* A,Rank lo,Rank hi)
@@ -199,6 +200,12 @@ int Vector<T>::deduplicate()
 }
 
 template <typename T>
+static void visit(T& e)
+{
+    std::cout<<e<<" ";
+}
+
+template <typename T>
 void Vector<T>::traverse(void (*visit) (T&))
 {
     for(int i = 0;i < _size;i++)
@@ -217,12 +224,14 @@ template <typename T> struct Increase
     virtual void operator() (T& e){e++;}
 };
 
-template <typename  T> void increase(Vector<T>& V)
+template <typename  T> 
+void increase(Vector<T>& V)
 {
     V.traverse(Increase<T>());
 }
 
-template <typename T> int Vector<T>::disordered() const
+template <typename T> 
+int Vector<T>::disordered() const
 {
     int n = 0;
     for(int i = 1;i < _size;i++){
@@ -232,7 +241,8 @@ template <typename T> int Vector<T>::disordered() const
     return n;
 }
 
-template <typename T> int Vector<T>::uniquify()
+template <typename T> 
+int Vector<T>::uniquify()
 {
     Rank i = 0,j = 0;
     while(++j < _size){
@@ -244,7 +254,8 @@ template <typename T> int Vector<T>::uniquify()
 }
 
 
-template <typename T> static Rank binsearch(T* A, T const& e, Rank lo,Rank hi)
+template <typename T> 
+static Rank binsearch(T* A, T const& e, Rank lo,Rank hi)
 {
     while(lo < hi){
         Rank mi = (lo + hi)>>1;
@@ -254,8 +265,56 @@ template <typename T> static Rank binsearch(T* A, T const& e, Rank lo,Rank hi)
 }
 
 
-template <typename T> Rank Vector<T>::search(T const& e,Rank lo,Rank hi) const
+template <typename T> 
+Rank Vector<T>::search(T const& e,Rank lo,Rank hi) const
 {
     //return (rand() % 2)? binsearch(_elem,e,lo,hi):fibsearch(_elem, e, lo, hi);
     return binsearch(_elem,e,lo,hi);
+}
+
+template <typename T> 
+void Vector<T>::bubbleSort(Rank lo,Rank hi)
+{
+    while(!bubble(lo,hi--));
+}
+
+template <typename T> 
+bool Vector<T>::bubble(Rank lo,Rank hi)
+{
+    bool sorted = true;
+    while(++lo < hi){
+        if(_elem[lo - 1] > _elem[lo]){
+            sorted = false;
+            swap(_elem[lo - 1],_elem[lo]);
+        }
+    }
+    return sorted;
+}
+
+template <typename T> 
+void Vector<T>::mergeSort(Rank lo,Rank hi)
+{
+    if(hi - lo < 2)
+        return;
+    int mi = (lo + hi) / 2;
+    mergeSort(lo,mi);mergeSort(mi,hi);
+    merge(lo,mi,hi);
+}
+
+template <typename T> 
+void Vector<T>::merge(Rank lo,Rank mi,Rank hi)
+{
+    T* A = _elem + lo;
+    int lb = mi - lo;T* B = new T[lb];
+    for(Rank i = 0; i < lb;i++){
+        B[i] = A[i];
+    }
+    int lc = hi - mi;T* C = _elem + mi;
+    for(Rank i = 0,j = 0,k = 0;(j < lb)||(k < lc);){
+        if( (j < lb) && (!(k < lc) || (B[j] <= C[k])))
+            A[i++] = B[j++];
+        if( (k < lc) && (!(j < lb) || (C[k] < B[j])) )
+            A[i++] = C[k++];
+    }
+    delete [] B;
 }
