@@ -8,5 +8,5 @@ vector_main.o:vector_main.cpp
 	g++ -c -Wall vector_main.cpp -o vector_main.o
 
 clean:
-	rm vector.o vector_main.o ../build/vector
+	rm *.o *.out
 	echo "CLEAN DONE"

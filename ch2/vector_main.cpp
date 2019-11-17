@@ -6,6 +6,10 @@
 
 using namespace std;
 
+template <typename T> void visit(T& e){
+    std::cout<<e<<" ";
+}
+
 int main(void)
 {
     int arr[5] = {0,1,2,3,4};

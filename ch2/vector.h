@@ -199,11 +199,13 @@ int Vector<T>::deduplicate()
     return old_size - _size;
 }
 
+/*
 template <typename T>
 static void visit(T& e)
 {
     std::cout<<e<<" ";
 }
+*/
 
 template <typename T>
 void Vector<T>::traverse(void (*visit) (T&))
