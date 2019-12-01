@@ -22,3 +22,20 @@ template <typename T> struct ListNode{
     ListNodePosi(T) insertAsPred(T const& e);
     ListNodePosi(T) insertAsSucc(T const& e);
 };
+
+template <typename T>
+ListNodePosi(T) ListNode<T>::insertAsPred(T const& e){
+    ListNodePosi(T) n = new ListNode(e,pred,this);
+    pred->succ = n;
+    this->pred = n;
+    return n;
+}
+
+
+template <typename T>
+ListNodePosi(T) ListNode<T>::insertAsSucc(T const& e){
+    ListNodePosi(T) n = new ListNode(e,this,succ);
+    succ->pred = n;
+    this->succ = n;
+    return n;
+}
