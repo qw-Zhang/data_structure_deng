@@ -1,8 +1,11 @@
-List.out:List_main.o
-	g++ -g -Wall List_main.o -o List.out
+vector.out:vector_main.o
+	g++ -g -Wall vector_main.o -o vector.out
 
-List_main.o:List_main.cpp
-	g++ -c -Wall List_main.cpp -o List_main.o
+vector.o:vector.cpp
+	g++ -c -Wall vector.h vector.cpp -o vector.o
+
+vector_main.o:vector_main.cpp
+	g++ -c -Wall vector_main.cpp -o vector_main.o
 
 clean:
 	rm *.o *.out

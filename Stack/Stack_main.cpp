@@ -1,5 +1,7 @@
 #include <iostream>
-#include"Stack.h"
+#include<cstring>
+//#include"Stack.h"
+#include"rpn.cpp"
 
 using namespace std;
 
@@ -9,7 +11,8 @@ bool paren(const char exp[], int lo,int hi);
 
 int main()
 {
-   Stack<int> s;
+/*   
+    Stack<int> s;
     s.push(11);
     s.push(100);
     s.push(1000);
@@ -24,7 +27,12 @@ int main()
     char exp[] = "}{{[[[{{{(())}()}}]]]}}";
     int len = sizeof(exp)/sizeof(char);
     cout<<paren(exp,0,len-1)<<endl;
-
+*/
+    char S[] = "1234+23*33";
+    char* RPN = new char[100];
+    float tt = rpn::evaluate(S,RPN);
+    cout<<" "<<RPN<<endl;
+    delete[] RPN;
     return 0;
 }
 
@@ -75,3 +83,5 @@ bool paren(const char exp[], int lo, int hi)
     }
     return S.empty();
 }
+
+
