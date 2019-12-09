@@ -1,12 +1,13 @@
 #include <iostream>
 #include<cstring>
+#include<cstdlib>
 //#include"Stack.h"
 #include"rpn.cpp"
 
 using namespace std;
 
-void convert_recursive(Stack<char>& S, __int64_t n, int base);
-void convert_iteration(Stack<char>& S, __int64_t n, int base);
+void convert_recursive(Stack<char>& S, long long n, int base);
+void convert_iteration(Stack<char>& S, long long n, int base);
 bool paren(const char exp[], int lo,int hi);
 
 int main()
@@ -28,15 +29,16 @@ int main()
     int len = sizeof(exp)/sizeof(char);
     cout<<paren(exp,0,len-1)<<endl;
 */
-    char S[] = "1234+23*33";
+    char S[] = "1234+23*(1+1)/33";
     char* RPN = new char[100];
     float tt = rpn::evaluate(S,RPN);
-    cout<<" "<<RPN<<endl;
+    cout<<RPN<<endl;
+    cout<<tt<<endl;
     delete[] RPN;
     return 0;
 }
 
-void convert_recursive(Stack<char>& S, __int64_t n,int base)
+void convert_recursive(Stack<char>& S, long long n,int base)
 {
     static char digit[] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
     if(0 < n){
@@ -45,7 +47,7 @@ void convert_recursive(Stack<char>& S, __int64_t n,int base)
     }
 }
 
-void convert_iteration(Stack<char>& S, __int64_t n,int base)
+void convert_iteration(Stack<char>& S, long long n,int base)
 {
     char digit[] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
     while(n > 0){
