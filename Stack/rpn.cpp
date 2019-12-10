@@ -1,4 +1,3 @@
-#include<iostream>
 #include<cstring>
 #include<cmath>
 #include"Stack.h"
@@ -50,11 +49,6 @@ namespace rpn{
 	    	}
 		}
 		
-	   
-	  // int move = readNumber(S, opnd);
-	   //S = S + move;
-	   //append(RPN,opnd.top());
-	    
 	    return opnd.pop();
 	}
 	

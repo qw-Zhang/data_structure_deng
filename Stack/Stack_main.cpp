@@ -2,8 +2,9 @@
 #include<cstring>
 #include<cstdlib>
 //#include"Stack.h"
-#include"rpn.cpp"
-
+//#include"rpn.cpp"
+//#include"Queen.cpp"
+#include "Laby.h"
 using namespace std;
 
 void convert_recursive(Stack<char>& S, long long n, int base);
@@ -29,12 +30,21 @@ int main()
     int len = sizeof(exp)/sizeof(char);
     cout<<paren(exp,0,len-1)<<endl;
 */
-    char S[] = "1234+23*(1+1)/33";
+    /*
+     * 
+    char S[] = "1+2^3+4+23*(1+1)/33";
     char* RPN = new char[100];
     float tt = rpn::evaluate(S,RPN);
     cout<<RPN<<endl;
     cout<<tt<<endl;
     delete[] RPN;
+    */
+    //placeQueens(10);
+    //Cell arr[LABY_MAX][LABY_MAX];
+    Cell* c1 = &laby[2][1];
+    Cell* c2 = &laby[10][3];
+    bool connect = lanbyrinth(laby,c1,c2);
+    cout<<connect<<endl;
     return 0;
 }
 
