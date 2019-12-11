@@ -13,7 +13,10 @@ bool paren(const char exp[], int lo,int hi);
 
 int main()
 {
-/*   
+    /*   
+    *
+    * basic stack function
+    * 
     Stack<int> s;
     s.push(11);
     s.push(100);
@@ -26,12 +29,16 @@ int main()
     }
     cout<<endl;
     
+    
     char exp[] = "}{{[[[{{{(())}()}}]]]}}";
     int len = sizeof(exp)/sizeof(char);
     cout<<paren(exp,0,len-1)<<endl;
-*/
+    */
+   
     /*
      * 
+     * RPN expression and calculate value
+     * rpn.cpp
     char S[] = "1+2^3+4+23*(1+1)/33";
     char* RPN = new char[100];
     float tt = rpn::evaluate(S,RPN);
@@ -39,7 +46,15 @@ int main()
     cout<<tt<<endl;
     delete[] RPN;
     */
-    //placeQueens(10);
+
+    /*
+    *
+    * N Queen question
+    * Queen.cpp
+    int num = placeQueens(10);
+    cout<<num<<endl;
+    */
+
     //Cell arr[LABY_MAX][LABY_MAX];
     Cell* c1 = &laby[2][1];
     Cell* c2 = &laby[10][3];
@@ -95,5 +110,3 @@ bool paren(const char exp[], int lo, int hi)
     }
     return S.empty();
 }
-
-

@@ -1,4 +1,4 @@
-#include<iostream>
+//#include<iostream>
 #include "Stack.h"
 
 typedef enum {AVAILABLE, ROUTE , BACKTRACKED, WALL} Status;
