@@ -12,8 +12,8 @@
                 "-Wall",
                 "${file}",
                 "-o",
-                "${fileDirname}/${fileBasenameNoExtension}"
-                //"../build/${fileBasenameNoExtension}"
+                "${fileDirname}/../build/${fileBasenameNoExtension}"
+                //"${workspaceFolder}/build/${fileBasenameNoExtension}"
             ],
             "options": {
                 "cwd": "/usr/bin"
