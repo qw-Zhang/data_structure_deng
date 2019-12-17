@@ -6,7 +6,10 @@
         "unordered_map": "cpp",
         "string_view": "cpp",
         "streambuf": "cpp",
-        "memory": "cpp"
+        "memory": "cpp",
+        "iostream": "cpp",
+        "iosfwd": "cpp",
+        "ostream": "cpp"
     },
     "python.pythonPath": "/usr/bin/python3",
     "files.exclude": {

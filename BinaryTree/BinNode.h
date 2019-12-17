@@ -1,5 +1,13 @@
+#include <iostream>
+#include <cstdlib>
 #define BinNodePosi(T) BinNode<T> *
 #define stature(p) ((p) ? (p)->height : -1)
+
+template <typename T>
+static void visit(T &x)
+{
+    std::cout << x << " ";
+}
 
 typedef enum
 {
@@ -42,14 +50,11 @@ struct BinNode
     BinNodePosi(T) insertAsLC(T const &);
     BinNodePosi(T) insertAsRC(T const &);
     BinNodePosi(T) succ();
-    template <typename VST>
-    void travLevel(VST &);
-    template <typename VST>
-    void travPre(VST &);
-    template <typename VST>
-    void travIn(VST &);
-    template <typename VST>
-    void travPost(VST &);
+    //template <typename VST>
+    void travLevel(void (*)(T &));
+    void travPre(void (*)(T &));
+    void travIn(void (*)(T &));
+    void travPost(void (*)(T &));
 
     bool operator<(BinNode const &bn)
     {
@@ -68,14 +73,14 @@ struct BinNode
 #define HasParent(x) (!IsRoot(x))
 #define HasLChild(x) ((x).lc)
 #define HasRChild(x) ((x).rc)
-#define HasChild(x) (HasChild(x) || HasRChild(x))
-#define HasBothChild(x) (HasChild(x) && HasRChild(x))
+#define HasChild(x) (HasLChild(x) || HasRChild(x))
+#define HasBothChild(x) (HasLChild(x) && HasRChild(x))
 #define IsLeaf(x) (!HasChild(x))
 
-#define sibling(p) (IsChild(*(p)) ? (p)->parent->rc : (p)->parent->lc)
-#define uncle(x) (IsChild(*((x)->parent)) ? (x)->parent->parent->rc : (x)->parent->parent->lc)
+#define sibling(p) (IsRChild(*(p)) ? (p)->parent->rc : (p)->parent->lc)
+#define uncle(x) (IsRChild(*((x)->parent)) ? (x)->parent->parent->rc : (x)->parent->parent->lc)
 
-#define FromParentTo(x) (IsRoot(x) ? _root : (IsChild(x) ? (x).parent->lc : (x).parent->rc))
+#define FromParentTo(x) (IsRoot(x) ? _root : (IsLChild(x) ? (x).parent->lc : (x).parent->rc))
 
 template <typename T>
 BinNodePosi(T) BinNode<T>::insertAsLC(T const &e)
@@ -90,29 +95,29 @@ BinNodePosi(T) BinNode<T>::insertAsRC(T const &e)
 }
 
 template <typename T>
-template <typename VST>
-void BinNode<T>::travIn(VST &visit)
+void BinNode<T>::travIn(void (*)(T &))
 {
-    switch (rand() % 5)
-    {
-    case 1:
-        travIn_I1(this, visit);
-        break;
+    // switch (rand() % 5)
+    // {
+    // case 1:
+    //     travIn_I1(this, visit);
+    //     break;
 
-    case 2:
-        travIn_I2(this, visit);
-        break;
+    // case 2:
+    //     travIn_I2(this, visit);
+    //     break;
 
-    case 3:
-        travIn_I3(this, visit);
-        break;
+    // case 3:
+    //     travIn_I3(this, visit);
+    //     break;
 
-    case 4:
-        travIn_I4(this, visit);
-        break;
+    // case 4:
+    //     travIn_I4(this, visit);
+    //     break;
 
-    default:
-        travIn_R(this, visit);
-        break;
-    }
+    // default:
+    //     travIn_R(this, visit);
+    //     break;
+    // }
+    travIn_I1(this, visit);
 }

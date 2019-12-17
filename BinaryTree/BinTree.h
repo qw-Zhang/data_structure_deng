@@ -1,7 +1,6 @@
 #include "BinNode.h"
 #include "../Stack/Stack.h"
 #include "../Stack/queue.h"
-//#include <memory>
 
 template <typename T>
 class BinTree
@@ -13,6 +12,7 @@ protected:
     void updateHeightAbove(BinNodePosi(T) x);
 
 public:
+
     BinTree()
     {
         _size = 0;
@@ -39,32 +39,38 @@ public:
     int remove(BinNodePosi(T) x);
     BinTree<T> *secede(BinNodePosi(T) x);
 
+    void traverse(BinNodePosi(T) x, void (*)(T &));
     template <typename VST>
-    void travLevel(VST &visit)
+    void traverse(BinNodePosi(T) x, VST &);
+
+    //template <typename VST>
+    void travLevel(void (*)(T &))
     {
         if (_root)
         {
             _root->travLevel(visit);
         }
     }
-    template <typename VST>
-    void travPre(VST &visit)
+    
+    //template <typename VST>
+    void travPre(void (*)(T &))
     {
         if (_root)
         {
             _root->travPre(visit);
         }
     }
-    template <typename VST>
-    void travIn(VST &visit)
+
+    void travIn(void (*)(T &))
     {
         if (_root)
         {
             _root->travIn(visit);
         }
     }
-    template <typename VST>
-    void travPost(VST &visit)
+
+    
+    void travPost(void (*)(T &))
     {
         if (_root)
         {
@@ -81,6 +87,31 @@ public:
         return _root && t._root && (_root->data == t._root->data);
     }
 };
+
+template <typename T>
+void BinTree<T>::traverse(BinNodePosi(T) x, void (*visit)(T &)) //this function is general iteration algorithm. It's easy to transform preorder, inorder or backorder
+                                                                // but the efficency is slow.
+{
+
+    if (!x)
+        return;
+    visit(x->data);
+    //std::cout<<x->data<<" ";
+    traverse(x->lc, visit);
+    traverse(x->rc, visit);
+}
+
+template <typename T>
+template <typename VST>
+void BinTree<T>::traverse(BinNodePosi(T) x, VST &visit)
+{
+    if (!x)
+        return;
+    visit(x->data);
+    //std::cout<<x->data<<" ";
+    traverse(x->lc, visit);
+    traverse(x->rc, visit);
+}
 
 template <typename T>
 bool lt(BinNodePosi(T) r1, BinNodePosi(T) r2)
@@ -149,7 +180,10 @@ BinNodePosi(T) BinTree<T>::attachAsLC(BinNodePosi(T) x, BinTree<T> *&S)
     updateHeightAbove(x);
     S->_root = NULL;
     S->_size = 0;
-    release(S);
+    if (S)
+    { //release(S);
+        delete (S);
+    }
     S = NULL;
     return x;
 }
@@ -165,7 +199,10 @@ BinNodePosi(T) BinTree<T>::attachAsRC(BinNodePosi(T) x, BinTree<T> *&S)
     updateHeightAbove(x);
     S->_root = NULL;
     S->_size = 0;
-    release(S);
+    if (S)
+    { //release(S);
+        delete (S);
+    }
     S = NULL;
     return x;
 }
@@ -188,8 +225,11 @@ static int removeAt(BinNodePosi(T) x)
         return 0;
     }
     int n = 1 + removeAt(x->lc) + removeAt(x->rc);
-    //release(x->data);
-    release(x);
+    if (x)
+    { //release(x->data);release(x);
+        //delete(x->data); ---> no executed any action
+        delete (x);
+    }
     return n;
 }
 
@@ -206,16 +246,6 @@ BinTree<T> *BinTree<T>::secede(BinNodePosi(T) x)
     return S;
 }
 
-template <typename T, typename VST>
-void traverse(BinNodePosi(T) x, VST &visit) //this function is general iteration algorithm. It's easy to transform preorder, inorder or backorder
-                                            // but the efficency is slow.
-{
-    if (!x)
-        return;
-    visit(x->data);
-    traverse(x->lc, visit);
-    traverse(x->rc, visit);
-}
 
 template <typename T, typename VST>
 void travPre_I1(BinNodePosi(T) x, VST &visit)
@@ -239,6 +269,7 @@ void travPre_I1(BinNodePosi(T) x, VST &visit)
         }
     }
 }
+
 
 template <typename T, typename VST>
 static void visitAlongLeftBranch(BinNodePosi(T) x, VST &visit, Stack<BinNodePosi(T)> &S)
@@ -276,8 +307,8 @@ static void goAlongLeftBranch(BinNodePosi(T) x, Stack<BinNodePosi(T)> &S)
     }
 }
 
-template <typename T, typename VST>
-void travIn_1(BinNodePosi(T) x, VST &visit)
+template <typename T>
+void travIn_I1(BinNodePosi(T) x, void (*)(T &))
 {
     Stack<BinNodePosi(T)> S;
     while (true)
@@ -293,20 +324,22 @@ void travIn_1(BinNodePosi(T) x, VST &visit)
     }
 }
 
-template <typename T> template <typename VST>
-void BinNode<T>::travLevel(VST & visit)
+template <typename T>
+void BinNode<T>::travLevel(void (*)(T &))
 {
-    Queue <BinNodePosi(T)> Q;
+    Queue<BinNodePosi(T)> Q;
     Q.enqueue(this);
-    while(!Q.empty()){
+    while (!Q.empty())
+    {
         BinNodePosi(T) x = Q.dequeue();
         visit(x->data);
-        if(HasLChild(*x)){
+        if (HasLChild(*x))
+        {
             Q.enqueue(x->lc);
         }
-        if(HasRChild(*x)){
+        if (HasRChild(*x))
+        {
             Q.enqueue(x->rc);
         }
     }
-    
 }
