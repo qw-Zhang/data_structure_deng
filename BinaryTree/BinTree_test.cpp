@@ -16,12 +16,14 @@ int main(void)
     b.insertAsRC(b.root()->lc,102);
     BinNodePosi(int) temp = b.root();
     for(int i = 1; i < 10; i++){
-        (b.insertAsLC(temp,i));
-        temp = (b.insertAsRC(temp,i+20));
+        temp = (b.insertAsLC(temp,i));
+        temp->rc = (b.insertAsRC(temp->parent,i+20));
     }
     std::cout<<b.size()<<std::endl;
     b.traverse(b.root(),visit);
     std::cout<<std::endl;
     b.travIn(visit);
+    std::cout<<std::endl;
+    travIn_I1(b.root(),visit);
     return 0;
 } 
