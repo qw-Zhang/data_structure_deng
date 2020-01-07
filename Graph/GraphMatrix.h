@@ -1,5 +1,5 @@
 #include "../Graph/Graph.h"
-#include "../Vector/vector.h"
+//#include "../Vector/vector.h"
 
 template <typename Tv> 
 struct Vertex{
@@ -10,7 +10,7 @@ struct Vertex{
     int parent;
     int priority;
     Vertex (Tv const& d = (Tv) 0):
-        data(d), inDegree(0), outdegree(0), status(UNDISCOVERED),
+        data(d), inDegree(0), outDegree(0), status(UNDISCOVERED),
         dTime(-1), fTime(-1),parent(-1), priority(__INT_MAX__) {}
 };
 
@@ -18,16 +18,16 @@ template <typename Te>
 struct Edge{
     Te data;
     int weight;
-    EStatus status;
+    EStatus type;
     Edge(Te const& d,int w) :
-        data(d),weight(w), status(UNDETERMINED) {}
+        data(d),weight(w), type(UNDETERMINED) {}
 };
 
 template <typename Tv, typename Te>
 class GraphMatrix : public Graph<Tv, Te> {
     private:
         Vector< Vertex<Tv> > V;
-        Vector< Vector<Edge<Te>* >> E;
+        Vector< Vector<Edge<Te>* > > E;
     public:
         GraphMatrix(){
             n = 0;
@@ -58,6 +58,39 @@ class GraphMatrix : public Graph<Tv, Te> {
             return nextNbr(i,n);
         }
         
+
+        virtual int insert(Tv const& vertex){
+            for(int j = 0; j < n; j++){
+                E[j].insert(NULL);
+            }
+            n++;
+
+            E.insert(Vector< Edge<Te>* >(n,n,NULL));
+
+            return V.insert(Vertex<Tv>(vertex));
+        }
+
+        virtual Tv remove(int i){
+            for(int j = 0; j < n;j++){
+                if(exists(i,j)){
+                    delete E[i][j];
+                    V[j].inDegree--;
+                }
+            }
+            E.remove(i);
+            n--;
+
+            for(int j = 0;j < n;j++){
+                if(exists(j,i)){
+                    delete E[j].remove(i);
+                    V[j].outDegree--;
+                }
+            }
+            Tv vBak = vertex(i);
+            V.remove(i);
+            return vBak;
+        }
+
         virtual bool exists(int i,int j){
             return (0 <= i)&&(i < n) && (0 <= j) && (j < n)
                    && E[i][j] != NULL;
@@ -66,7 +99,7 @@ class GraphMatrix : public Graph<Tv, Te> {
             return E[i][j]->data;
         }
         virtual EStatus& type(int i, int j){
-            return E[i][j]->status;
+            return E[i][j]->type;
         }
         virtual int& weight(int i,int j){
             return E[i][j]->weight;
@@ -89,38 +122,6 @@ class GraphMatrix : public Graph<Tv, Te> {
             V[i].outDegree--;
             V[j].inDegree--;
             return eBak;
-        }
-
-        int insert(Tv const& vertex){
-            for(int j = 0; j < n; j++){
-                E[j].insert(NULL);
-            }
-            n++;
-
-            E.insert(Vector< Edge<Te>* >(n,n,NULL));
-
-            return V.insert(Vertex<Tv>(vertex));
-        }
-
-        Tv remove(int i){
-            for(int j = 0; j < n;j++){
-                if(exists(i,j)){
-                    delete E[i][j];
-                    V[j].inDegree--;
-                }
-            }
-            E.remove(i);
-            n--;
-
-            for(int j = 0;j < n;j++){
-                if(exists(j,i)){
-                    delete E[j].remove(i);
-                    V[j].outDegree--;
-                }
-            }
-            Tv vBak = vertex(i);
-            V.remove(i);
-            return vBak;
         }
 
 };

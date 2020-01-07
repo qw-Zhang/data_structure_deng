@@ -1,18 +1,20 @@
+#include "../Stack/Stack.h"
+
 typedef enum{UNDISCOVERED, DISCOVERED, VISITED} VStatus;
-typedef enum{UNDETERMINED, TRWW, CROSS, FORWARD, BACKWARD} EStatus;
+typedef enum{UNDETERMINED, TREE, CROSS, FORWARD, BACKWARD} EStatus;
 
 template <typename Tv,typename Te>
 class Graph{
     private:
         void reset(){
             for(int i = 0; i < n;i++){
-                V_status(i) = UNDISCOVERED;
+                status(i) = UNDISCOVERED;
                 dTime(i) = fTime(i) = -1;
                 parent(i) = -1;
                 priority(i) = __INT_MAX__;
                 for(int j = 0; j < n; j++){
                     if(exists(i,j)){
-                        E_status(i,j) = UNDETERMINED;
+                        status(i,j) = UNDETERMINED;
                     }
                 }
             }
