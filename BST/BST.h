@@ -9,7 +9,9 @@ template <typename T> class BST : public BinTree<T>{
         )
 
     public:
-        void nothing(void);
+        //i don't know why the function which is nearest "public" can't use normally...
+        //so i add variable named "nothing" between the first funtion and "public"..
+        int nothing;
         virtual BinNodePosi(T) insert(const T& e);
         virtual bool remove( const T& e);
         virtual BinNodePosi(T)& search( const T& e);
@@ -27,4 +29,53 @@ static BinNodePosi(T) & searchIn(BinNodePosi(T) & v, const T& e, BinNodePosi(T) 
 template <typename T>
 BinNodePosi(T)& BST<T>::search( const T& e){
     return searchIn(_root, e , _hot = NULL);
+}
+
+template <typename T>
+BinNodePosi(T) BST<T>::insert(const T& e){
+    BinNodePosi(T)& x = search(e);
+    if(x){
+        return x;
+    }
+
+    x = new BinNode<T>(e,_hot);
+    _size++;
+    updateHeightAbove(x);
+    return x;
+}
+
+template <typename T> bool BST<T>::remove(const T& e){
+    BinNodePosi(T)& x = search(e);
+    if(!x){
+        return false;
+    }
+    removeAt(x, _hot);
+    _size--;
+    updateHeightAbove(_hot);
+    return true;
+}
+
+template <typename T>
+static BinNodePosi(T) removeAt(BinNodePosi(T)& x, BinNodePosi(T)& hot){
+    BinNodePosi(T) x = x;
+    BinNodePosi(T) succ = NULL;
+    if(!HasLChild(*x)){
+        succ = x = x->rc;
+    }
+    else if(!HasRChild(*x)){
+        succ = x = x->lc;
+    }
+    else{
+        w = w->succ();
+        swap(x->data,w->data);
+        BinNodePosi(T) u = w->parent;
+        ((u==x)? u->rc:u->lc) = succ = w->rc;
+    }
+    hot = w->parent;
+    if(succ){
+        succ->parent = hot;
+    }
+    release(w->data);
+    release(w);
+    return succ;
 }
