@@ -5,9 +5,9 @@ template <typename T> class BST : public BinTree<T>{
         BinNodePosi(T) _hot;
         BinNodePosi(T) connect34(
             BinNodePosi(T), BinNodePosi(T), BinNodePosi(T), 
-            BinNodePosi(T), BinNodePosi(T), BinNodePosi(T), BinNodePosi(T);
-        )
-
+            BinNodePosi(T), BinNodePosi(T), BinNodePosi(T), BinNodePosi(T)
+        );
+        BinNodePosi(T) rotateAt(BinNodePosi(T) x);
     public:
         //i don't know why the function which is nearest "public" can't use normally...
         //so i add variable named "nothing" between the first funtion and "public"..
@@ -28,7 +28,7 @@ static BinNodePosi(T) & searchIn(BinNodePosi(T) & v, const T& e, BinNodePosi(T) 
 
 template <typename T>
 BinNodePosi(T)& BST<T>::search( const T& e){
-    return searchIn(_root, e , _hot = NULL);
+    return searchIn(this->_root, e , this->_hot = NULL);
 }
 
 template <typename T>
@@ -39,7 +39,7 @@ BinNodePosi(T) BST<T>::insert(const T& e){
     }
 
     x = new BinNode<T>(e,_hot);
-    _size++;
+    this->_size++;
     updateHeightAbove(x);
     return x;
 }
@@ -50,14 +50,14 @@ template <typename T> bool BST<T>::remove(const T& e){
         return false;
     }
     removeAt(x, _hot);
-    _size--;
+    this->_size--;
     updateHeightAbove(_hot);
     return true;
 }
 
 template <typename T>
 static BinNodePosi(T) removeAt(BinNodePosi(T)& x, BinNodePosi(T)& hot){
-    BinNodePosi(T) x = x;
+    BinNodePosi(T) w = x;
     BinNodePosi(T) succ = NULL;
     if(!HasLChild(*x)){
         succ = x = x->rc;
@@ -75,7 +75,9 @@ static BinNodePosi(T) removeAt(BinNodePosi(T)& x, BinNodePosi(T)& hot){
     if(succ){
         succ->parent = hot;
     }
-    release(w->data);
-    release(w);
+    //release(w->data);
+    delete w->data;
+    delete w;
+    //release(w);
     return succ;
 }

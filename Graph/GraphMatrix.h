@@ -30,12 +30,12 @@ class GraphMatrix : public Graph<Tv, Te> {
         Vector< Vector<Edge<Te>* > > E;
     public:
         GraphMatrix(){
-            n = 0;
-            e = 0;
+            this->n = 0;
+            this->e = 0;
         }
         ~GraphMatrix(){
-            for(int j  = 0; j < n; j++){
-                for(int k = 0; k < n; k++){
+            for(int j  = 0; j < this->n; j++){
+                for(int k = 0; k < this->n; k++){
                     delete E[j][k];
                 }
             }
@@ -55,32 +55,32 @@ class GraphMatrix : public Graph<Tv, Te> {
             return j;
         }
         virtual int firstNbr(int i){
-            return nextNbr(i,n);
+            return nextNbr(i,this->n);
         }
         
 
         virtual int insert(Tv const& vertex){
-            for(int j = 0; j < n; j++){
+            for(int j = 0; j < this->n; j++){
                 E[j].insert(NULL);
             }
-            n++;
+            this->n++;
 
-            E.insert(Vector< Edge<Te>* >(n,n,NULL));
+            E.insert(Vector< Edge<Te>* >(this->n,this->n,NULL));
 
             return V.insert(Vertex<Tv>(vertex));
         }
 
         virtual Tv remove(int i){
-            for(int j = 0; j < n;j++){
+            for(int j = 0; j < this->n;j++){
                 if(exists(i,j)){
                     delete E[i][j];
                     V[j].inDegree--;
                 }
             }
             E.remove(i);
-            n--;
+            this->n--;
 
-            for(int j = 0;j < n;j++){
+            for(int j = 0;j < this->n;j++){
                 if(exists(j,i)){
                     delete E[j].remove(i);
                     V[j].outDegree--;
@@ -92,7 +92,7 @@ class GraphMatrix : public Graph<Tv, Te> {
         }
 
         virtual bool exists(int i,int j){
-            return (0 <= i)&&(i < n) && (0 <= j) && (j < n)
+            return (0 <= i)&&(i < this->n) && (0 <= j) && (j < this->n)
                    && E[i][j] != NULL;
         }
         virtual Te& edge(int i,int j){
@@ -110,7 +110,7 @@ class GraphMatrix : public Graph<Tv, Te> {
                 return ;
             }
             E[i][j] = new Edge<Te>(edge,w);
-            e++;
+            this->e++;
             V[i].outDegree++;
             V[j].inDegree++;
         }
@@ -118,7 +118,7 @@ class GraphMatrix : public Graph<Tv, Te> {
             Te eBak = edge(i,j);
             delete E[i][j];
             E[i][j] = NULL;
-            e--;
+            this->e--;
             V[i].outDegree--;
             V[j].inDegree--;
             return eBak;
